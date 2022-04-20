@@ -1,9 +1,11 @@
 package com.bsuir.controllers;
 
 import com.bsuir.dtos.AgriculturalOperationDto;
+import com.bsuir.dtos.view.View;
 import com.bsuir.mappers.AgriculturalOperationMapper;
 import com.bsuir.models.AgriculturalOperation;
 import com.bsuir.services.AgriculturalOperationService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +44,7 @@ public class AgriculturalOperationController {
 	}
 
 	@PostMapping
-	public AgriculturalOperationDto create(@Valid @RequestBody AgriculturalOperationDto dto) {
+	public AgriculturalOperationDto create(@JsonView(View.Save.class) @Valid @RequestBody AgriculturalOperationDto dto) {
 		AgriculturalOperation operation = operationMapper.toOperation(dto);
 		AgriculturalOperation savedOperation = operationService.save(operation);
 		return operationMapper.toDto(savedOperation);
@@ -50,7 +52,7 @@ public class AgriculturalOperationController {
 
 	@PutMapping("/{id}")
 	public AgriculturalOperationDto update(
-			@Valid @RequestBody AgriculturalOperationDto dto,
+			@JsonView(View.Save.class) @Valid @RequestBody AgriculturalOperationDto dto,
 			@PathVariable("id") Long id
 	) {
 		dto.setId(id);

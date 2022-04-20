@@ -2,9 +2,11 @@ package com.bsuir.controllers;
 
 
 import com.bsuir.dtos.WorkPlanDto;
+import com.bsuir.dtos.view.View;
 import com.bsuir.mappers.WorkPlanMapper;
 import com.bsuir.models.WorkPlan;
 import com.bsuir.services.WorkPlanService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/trailers")
+@RequestMapping("/api/v1/work-plans")
 public class WorkPlanController {
 
 	private final WorkPlanMapper workPlanMapper;
@@ -43,7 +45,7 @@ public class WorkPlanController {
 	}
 
 	@PostMapping
-	public WorkPlanDto create(@Valid @RequestBody WorkPlanDto dto) {
+	public WorkPlanDto create(@JsonView(View.Save.class) @Valid @RequestBody WorkPlanDto dto) {
 		WorkPlan workPlan = workPlanMapper.toWorkPlan(dto);
 		WorkPlan savedWorkPlan = workPlanService.save(workPlan);
 		return workPlanMapper.toDto(savedWorkPlan);
@@ -51,7 +53,7 @@ public class WorkPlanController {
 
 	@PutMapping("/{id}")
 	public WorkPlanDto update(
-			@Valid @RequestBody WorkPlanDto dto,
+			@JsonView(View.Save.class) @Valid @RequestBody WorkPlanDto dto,
 			@PathVariable("id") Long id
 	) {
 		dto.setId(id);
