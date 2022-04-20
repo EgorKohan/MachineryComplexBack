@@ -12,40 +12,40 @@ import java.util.List;
 @Service
 public class SelfPropelledMachineTemplateServiceImpl implements SelfPropelledMachineTemplateService {
 
-    private final SelfPropelledMachineTemplateRepository templateRepository;
+    private final SelfPropelledMachineTemplateRepository machineTemplateRepository;
 
-    public SelfPropelledMachineTemplateServiceImpl(SelfPropelledMachineTemplateRepository templateRepository) {
-        this.templateRepository = templateRepository;
+    public SelfPropelledMachineTemplateServiceImpl(SelfPropelledMachineTemplateRepository machineTemplateRepository) {
+        this.machineTemplateRepository = machineTemplateRepository;
     }
 
     @Override
-    public SelfPropelledMachineTemplate getById(Long id) {
-        return templateRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Template with id " + id + " not found"));
+    public SelfPropelledMachineTemplate findById(Long id) {
+        return machineTemplateRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Machine template with id " + id + " not found"));
     }
 
     @Override
-    public List<SelfPropelledMachineTemplate> getAll() {
-        return templateRepository.findAll();
+    public List<SelfPropelledMachineTemplate> findAll() {
+        return machineTemplateRepository.findAll();
     }
 
     @Override
     public SelfPropelledMachineTemplate save(SelfPropelledMachineTemplate template) {
-        return templateRepository.save(template);
+        return machineTemplateRepository.save(template);
     }
 
     @Override
     public SelfPropelledMachineTemplate update(SelfPropelledMachineTemplate template) {
-        return templateRepository.save(template);
+        return machineTemplateRepository.save(template);
     }
 
     @Override
     public void delete(SelfPropelledMachineTemplate template) {
-        templateRepository.delete(template);
+        machineTemplateRepository.delete(template);
     }
 
     @Override
     public void deleteById(Long id) {
-        templateRepository.deleteById(id);
+        machineTemplateRepository.deleteById(id);
     }
 }

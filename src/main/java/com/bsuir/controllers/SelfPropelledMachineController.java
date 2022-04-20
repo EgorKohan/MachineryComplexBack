@@ -13,26 +13,33 @@ import java.util.List;
 @RequestMapping("/api/v1/machines")
 public class SelfPropelledMachineController {
 
-    private final SelfPropelledMachineMapper mapper;
+    private final SelfPropelledMachineMapper machineMapper;
     private final SelfPropelledMachineService machineService;
 
     public SelfPropelledMachineController(
-            SelfPropelledMachineMapper mapper,
-            SelfPropelledMachineService machineService
-    ) {
-        this.mapper = mapper;
+            SelfPropelledMachineMapper machineMapper,
+            SelfPropelledMachineService machineService) {
+        this.machineMapper = machineMapper;
         this.machineService = machineService;
     }
 
     @GetMapping
-    public List<SelfPropelledMachineDto> getAll() {
-        return mapper.toDtos(machineService.getAll());
+    public List<SelfPropelledMachineDto> findAll() {
+        List<SelfPropelledMachine> machines = machineService.findAll();
+        return machineMapper.toDtos(machines);
+    }
+
+    @GetMapping("/{id}")
+    public SelfPropelledMachineDto findById(@PathVariable("id") Long id) {
+        SelfPropelledMachine machine = machineService.findById(id);
+        return machineMapper.toDto(machine);
     }
 
     @PostMapping
     public SelfPropelledMachineDto create(@Valid @RequestBody SelfPropelledMachineDto dto) {
-        SelfPropelledMachine machine = mapper.toMachine(dto);
-        return mapper.toDto(machineService.create(machine));
+        SelfPropelledMachine machine = machineMapper.toMachine(dto);
+        SelfPropelledMachine savedMachine = machineService.save(machine);
+        return machineMapper.toDto(savedMachine);
     }
 
     @PutMapping("/{id}")
@@ -41,8 +48,9 @@ public class SelfPropelledMachineController {
             @PathVariable("id") Long id
     ) {
         dto.setId(id);
-        SelfPropelledMachine machine = mapper.toMachine(dto);
-        return mapper.toDto(machineService.update(machine));
+        SelfPropelledMachine machine = machineMapper.toMachine(dto);
+        SelfPropelledMachine updatedMachine = machineService.update(machine);
+        return machineMapper.toDto(updatedMachine);
     }
 
     @DeleteMapping("/{id}")

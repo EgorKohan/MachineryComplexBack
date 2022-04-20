@@ -12,4 +12,6 @@ public class SelfPropelledMachineTemplateDto {
     @NotBlank(message = "Machine name cannot be blank")
     private String machineName;
 
+    @NotBlank(message = "Code ID cannot be blank")
+    private String codeId;
 }

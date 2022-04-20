@@ -31,8 +31,11 @@ public class SelfPropelledMachineDto {
     @Min(value = 0, message = "Initial cost cannot be less than 0")
     private BigDecimal initialCost;
 
+    @NotNull(message = "Residual value cannot be null")
+    @Min(value = 0, message = "Residual value cannot be less than 0")
     private BigDecimal residualValue;
 
+    @NotNull(message = "Technical readiness factor cannot be null")
     @Min(value = 0, message = "Technical readiness factor cannot be less than 0")
     @Max(value = 1, message = "Technical readiness factor cannot be more than 1")
     private Float trk;

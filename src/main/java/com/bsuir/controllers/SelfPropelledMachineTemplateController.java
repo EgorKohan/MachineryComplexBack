@@ -13,28 +13,33 @@ import java.util.List;
 @RequestMapping("/api/v1/machine-templates")
 public class SelfPropelledMachineTemplateController {
 
-    private final SelfPropelledMachineTemplateService templateService;
-    private final SelfPropelledMachineTemplateMapper templateMapper;
+    private final SelfPropelledMachineTemplateService machineTemplateService;
+    private final SelfPropelledMachineTemplateMapper machineTemplateMapper;
 
     public SelfPropelledMachineTemplateController(
-            SelfPropelledMachineTemplateService templateService,
-            SelfPropelledMachineTemplateMapper templateMapper
-    ) {
-        this.templateService = templateService;
-        this.templateMapper = templateMapper;
+            SelfPropelledMachineTemplateService machineTemplateService,
+            SelfPropelledMachineTemplateMapper machineTemplateMapper) {
+        this.machineTemplateService = machineTemplateService;
+        this.machineTemplateMapper = machineTemplateMapper;
     }
 
     @GetMapping
-    public List<SelfPropelledMachineTemplateDto> getAll() {
-        List<SelfPropelledMachineTemplate> all = templateService.getAll();
-        return templateMapper.toDtos(all);
+    public List<SelfPropelledMachineTemplateDto> findAll() {
+        List<SelfPropelledMachineTemplate> templates = machineTemplateService.findAll();
+        return machineTemplateMapper.toDtos(templates);
+    }
+
+    @GetMapping("/{id}")
+    public SelfPropelledMachineTemplateDto findById(@PathVariable("id") Long id) {
+        SelfPropelledMachineTemplate template = machineTemplateService.findById(id);
+        return machineTemplateMapper.toDto(template);
     }
 
     @PostMapping
     public SelfPropelledMachineTemplateDto create(@Valid @RequestBody SelfPropelledMachineTemplateDto dto) {
-        SelfPropelledMachineTemplate template = templateMapper.toTemplate(dto);
-        SelfPropelledMachineTemplate savedTemplate = templateService.save(template);
-        return templateMapper.toDto(savedTemplate);
+        SelfPropelledMachineTemplate template = machineTemplateMapper.toTemplate(dto);
+        SelfPropelledMachineTemplate savedTemplate = machineTemplateService.save(template);
+        return machineTemplateMapper.toDto(savedTemplate);
     }
 
     @PutMapping("/{id}")
@@ -43,14 +48,14 @@ public class SelfPropelledMachineTemplateController {
             @PathVariable("id") Long id
     ) {
         dto.setId(id);
-        SelfPropelledMachineTemplate template = templateMapper.toTemplate(dto);
-        SelfPropelledMachineTemplate updatedTemplate = templateService.update(template);
-        return templateMapper.toDto(updatedTemplate);
+        SelfPropelledMachineTemplate template = machineTemplateMapper.toTemplate(dto);
+        SelfPropelledMachineTemplate updatedTemplate = machineTemplateService.update(template);
+        return machineTemplateMapper.toDto(updatedTemplate);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
-        templateService.deleteById(id);
+        machineTemplateService.deleteById(id);
     }
 
 }

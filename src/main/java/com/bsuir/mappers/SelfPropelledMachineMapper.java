@@ -20,7 +20,7 @@ public abstract class SelfPropelledMachineMapper {
 
     @BeforeMapping
     protected void setMachineTemplate(@MappingTarget SelfPropelledMachine machine, SelfPropelledMachineDto dto) {
-        SelfPropelledMachineTemplate template = templateService.getById(dto.getMachineTemplateId());
+        SelfPropelledMachineTemplate template = templateService.findById(dto.getMachineTemplateId());
         machine.setMachineTemplate(template);
     }
 
@@ -32,4 +32,5 @@ public abstract class SelfPropelledMachineMapper {
 
     public abstract List<SelfPropelledMachineDto> toDtos(List<SelfPropelledMachine> machines);
 
+    public abstract List<SelfPropelledMachine> toMachines(List<SelfPropelledMachineDto> dtos);
 }

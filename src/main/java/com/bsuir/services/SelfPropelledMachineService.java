@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface SelfPropelledMachineService {
 
-    List<SelfPropelledMachine> getAll();
+    List<SelfPropelledMachine> findAll();
 
-    SelfPropelledMachine create(SelfPropelledMachine template);
+    SelfPropelledMachine findById(Long id);
+
+    SelfPropelledMachine save(SelfPropelledMachine template);
 
     SelfPropelledMachine update(SelfPropelledMachine template);
 

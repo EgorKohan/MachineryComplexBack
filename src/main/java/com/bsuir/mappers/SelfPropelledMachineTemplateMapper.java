@@ -16,4 +16,5 @@ public interface SelfPropelledMachineTemplateMapper {
 
     List<SelfPropelledMachineTemplateDto> toDtos(Collection<SelfPropelledMachineTemplate> templates);
 
+    List<SelfPropelledMachineTemplate> toTemplates(Collection<SelfPropelledMachineTemplateDto> dtos);
 }
