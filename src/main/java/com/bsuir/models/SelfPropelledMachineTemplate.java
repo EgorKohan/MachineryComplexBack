@@ -11,7 +11,7 @@ import java.util.Set;
 @Setter
 @ToString
 @Entity
-@Table(name = "self_propelled_machine_template")
+@Table(name = "self_propelled_machine_templates")
 public class SelfPropelledMachineTemplate {
 
     @Id

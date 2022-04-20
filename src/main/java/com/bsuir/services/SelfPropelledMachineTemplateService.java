@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface SelfPropelledMachineTemplateService {
 
+    SelfPropelledMachineTemplate getById(Long id);
+
     List<SelfPropelledMachineTemplate> getAll();
 
     SelfPropelledMachineTemplate save(SelfPropelledMachineTemplate template);

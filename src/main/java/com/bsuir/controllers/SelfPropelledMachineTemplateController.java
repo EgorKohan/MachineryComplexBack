@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/machine-template")
+@RequestMapping("/api/v1/machine-templates")
 public class SelfPropelledMachineTemplateController {
 
     private final SelfPropelledMachineTemplateService templateService;

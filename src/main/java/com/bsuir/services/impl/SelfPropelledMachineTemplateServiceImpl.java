@@ -3,7 +3,9 @@ package com.bsuir.services.impl;
 import com.bsuir.models.SelfPropelledMachineTemplate;
 import com.bsuir.repositories.SelfPropelledMachineTemplateRepository;
 import com.bsuir.services.SelfPropelledMachineTemplateService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -14,6 +16,12 @@ public class SelfPropelledMachineTemplateServiceImpl implements SelfPropelledMac
 
     public SelfPropelledMachineTemplateServiceImpl(SelfPropelledMachineTemplateRepository templateRepository) {
         this.templateRepository = templateRepository;
+    }
+
+    @Override
+    public SelfPropelledMachineTemplate getById(Long id) {
+        return templateRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Template with id " + id + " not found"));
     }
 
     @Override
