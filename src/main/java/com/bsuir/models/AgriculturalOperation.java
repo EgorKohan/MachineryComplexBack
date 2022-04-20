@@ -1,7 +1,6 @@
 package com.bsuir.models;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,6 +28,6 @@ public class AgriculturalOperation {
     private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
 }
