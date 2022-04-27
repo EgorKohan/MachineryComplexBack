@@ -1,7 +1,9 @@
 package com.bsuir.validation;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+@Data
 @RequiredArgsConstructor
 public class Violation {
 
