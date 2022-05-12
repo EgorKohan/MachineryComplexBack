@@ -22,6 +22,4 @@ public interface TrailerTemplateService {
 
 	boolean isExistsByTrailerName(String trailerName);
 
-	boolean isExistsByCodeId(String codeId);
-
 }

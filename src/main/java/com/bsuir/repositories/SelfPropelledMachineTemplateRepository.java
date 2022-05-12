@@ -11,10 +11,6 @@ public interface SelfPropelledMachineTemplateRepository extends JpaRepository<Se
 
     Optional<SelfPropelledMachineTemplate> findByMachineName(String name);
 
-    Optional<SelfPropelledMachineTemplate> findByCodeId(String codeId);
-
-    boolean existsByCodeId(String id);
-
     boolean existsByMachineName(String machineName);
 
 }

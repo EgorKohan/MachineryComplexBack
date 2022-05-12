@@ -27,9 +27,6 @@ public class TrailerTemplate {
     @Column(name = "trailer_name", unique = true)
     private String trailerName;
 
-    @Column(name = "code_id", unique = true)
-    private String codeId;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

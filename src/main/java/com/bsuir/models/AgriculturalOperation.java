@@ -27,9 +27,6 @@ public class AgriculturalOperation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "code_id")
-    private String codeId;
-
     @Column(name = "name")
     private String name;
 

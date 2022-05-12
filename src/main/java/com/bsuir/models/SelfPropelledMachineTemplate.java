@@ -27,9 +27,6 @@ public class SelfPropelledMachineTemplate {
     @Column(name = "machine_name", unique = true)
     private String machineName;
 
-    @Column(name = "code_id", unique = true)
-    private String codeId;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

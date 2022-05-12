@@ -1,11 +1,9 @@
 package com.bsuir.controllers;
 
 import com.bsuir.dtos.SelfPropelledMachineDto;
-import com.bsuir.dtos.view.View;
 import com.bsuir.mappers.SelfPropelledMachineMapper;
 import com.bsuir.models.SelfPropelledMachine;
 import com.bsuir.services.SelfPropelledMachineService;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -44,7 +42,7 @@ public class SelfPropelledMachineController {
     }
 
     @PostMapping
-    public SelfPropelledMachineDto create(@JsonView(View.Save.class) @Valid @RequestBody SelfPropelledMachineDto dto) {
+    public SelfPropelledMachineDto create(@Valid @RequestBody SelfPropelledMachineDto dto) {
         SelfPropelledMachine machine = machineMapper.toMachine(dto);
         SelfPropelledMachine savedMachine = machineService.save(machine);
         return machineMapper.toDto(savedMachine);
@@ -52,7 +50,7 @@ public class SelfPropelledMachineController {
 
     @PutMapping("/{id}")
     public SelfPropelledMachineDto update(
-            @JsonView(View.Save.class) @Valid @RequestBody SelfPropelledMachineDto dto,
+            @Valid @RequestBody SelfPropelledMachineDto dto,
             @PathVariable("id") Long id
     ) {
         dto.setId(id);

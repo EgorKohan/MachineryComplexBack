@@ -11,10 +11,6 @@ public interface TrailerTemplateRepository extends JpaRepository<TrailerTemplate
 
     Optional<TrailerTemplate> findByTrailerName(String trailerName);
 
-    Optional<TrailerTemplate> findByCodeId(String codeId);
-
-    boolean existsByCodeId(String id);
-
     boolean existsByTrailerName(String trailerName);
 
 }

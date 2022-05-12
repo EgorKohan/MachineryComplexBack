@@ -1,11 +1,9 @@
 package com.bsuir.controllers;
 
 import com.bsuir.dtos.TrailerDto;
-import com.bsuir.dtos.view.View;
 import com.bsuir.mappers.TrailerMapper;
 import com.bsuir.models.Trailer;
 import com.bsuir.services.TrailerService;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,7 +41,7 @@ public class TrailerController {
     }
 
     @PostMapping
-    public TrailerDto create(@JsonView(View.Save.class) @Valid @RequestBody TrailerDto dto) {
+    public TrailerDto create(@Valid @RequestBody TrailerDto dto) {
         Trailer trailer = trailerMapper.toTrailer(dto);
         Trailer savedTrailer = trailerService.save(trailer);
         return trailerMapper.toDto(savedTrailer);
@@ -51,7 +49,7 @@ public class TrailerController {
 
     @PutMapping("/{id}")
     public TrailerDto update(
-            @JsonView(View.Save.class) @Valid @RequestBody TrailerDto dto,
+            @Valid @RequestBody TrailerDto dto,
             @PathVariable("id") Long id
     ) {
         dto.setId(id);

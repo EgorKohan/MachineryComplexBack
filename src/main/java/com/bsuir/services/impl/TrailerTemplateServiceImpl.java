@@ -33,14 +33,12 @@ public class TrailerTemplateServiceImpl implements TrailerTemplateService {
     public TrailerTemplate save(TrailerTemplate template) {
         template.setId(null);
         checkTrailerNameUniqueness(template.getTrailerName());
-        checkCodeIdUniqueness(template.getCodeId());
         return trailerTemplateRepository.save(template);
     }
 
     @Override
     public TrailerTemplate update(TrailerTemplate template) {
         checkTrailerNameUniqueness(template.getTrailerName());
-        checkCodeIdUniqueness(template.getCodeId());
         return trailerTemplateRepository.save(template);
     }
 
@@ -64,17 +62,8 @@ public class TrailerTemplateServiceImpl implements TrailerTemplateService {
         return trailerTemplateRepository.existsByTrailerName(trailerName);
     }
 
-    @Override
-    public boolean isExistsByCodeId(String codeId) {
-        return trailerTemplateRepository.existsByCodeId(codeId);
-    }
-
     private void checkTrailerNameUniqueness(String trailerName) {
         if(isExistsByTrailerName(trailerName)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trailer template with trailer name " + trailerName + " is exists");
-    }
-
-    private void checkCodeIdUniqueness(String codeId) {
-        if(isExistsByCodeId(codeId)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trailer template with code id " + codeId + " is exists");
     }
 
 }
