@@ -59,7 +59,7 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
         workPlans.forEach(workPlan -> fillGAMSObject(gamsVariables, workPlan));
 
         GAMSWorkspaceInfo wsInfo = new GAMSWorkspaceInfo();
-        File workingDirectory = new File(System.getProperty("user.dir"), "MachineryBack2");
+        File workingDirectory = new File(System.getProperty("user.dir"), "MachineryBack2"); //generate file for each user
         boolean isDirCreated = workingDirectory.mkdir();
 
         log.debug("Directory {} is created: {}", workingDirectory.getName(), isDirCreated);
