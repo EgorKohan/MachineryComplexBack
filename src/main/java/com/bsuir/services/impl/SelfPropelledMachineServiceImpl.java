@@ -3,6 +3,7 @@ package com.bsuir.services.impl;
 import com.bsuir.models.SelfPropelledMachine;
 import com.bsuir.repositories.SelfPropelledMachineRepository;
 import com.bsuir.services.SelfPropelledMachineService;
+import com.bsuir.services.SelfPropelledMachineTemplateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,14 +14,26 @@ import java.util.List;
 public class SelfPropelledMachineServiceImpl implements SelfPropelledMachineService {
 
     private final SelfPropelledMachineRepository machineRepository;
+    private final SelfPropelledMachineTemplateService templateService;
 
-    public SelfPropelledMachineServiceImpl(SelfPropelledMachineRepository machineRepository) {
+    public SelfPropelledMachineServiceImpl(
+            SelfPropelledMachineRepository machineRepository,
+            SelfPropelledMachineTemplateService templateService
+    ) {
         this.machineRepository = machineRepository;
+        this.templateService = templateService;
     }
 
     @Override
     public List<SelfPropelledMachine> findAll() {
         return machineRepository.findAll();
+    }
+
+    @Override
+    public List<SelfPropelledMachine> findAllByMachineTemplateId(Long templateId) {
+        if (!templateService.isExistsById(templateId))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Machine template with id " + templateId + " doesn't exist");
+        return machineRepository.findAllByMachineTemplateId(templateId);
     }
 
     @Override

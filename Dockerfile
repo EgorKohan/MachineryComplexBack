@@ -9,4 +9,4 @@ COPY ./ /home/server/
 EXPOSE 8080
 
 CMD mvn clean install \
-    && java -jar -Dspring.profiles.active=test target/MachineryComplexBack-1.0-SNAPSHOT.jar
+    && java -jar target/MachineryComplexBack-1.0-SNAPSHOT.jar

@@ -2,6 +2,10 @@ spring:
   profiles:
     active: dev
 
+server:
+  error:
+    include-message: always
+
 ---
 
 spring:
