@@ -6,14 +6,7 @@ import com.bsuir.mappers.TrailerMapper;
 import com.bsuir.models.Trailer;
 import com.bsuir.services.TrailerService;
 import com.fasterxml.jackson.annotation.JsonView;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -34,6 +27,12 @@ public class TrailerController {
 	@GetMapping
 	public List<TrailerDto> findAll() {
 		List<Trailer> trailers = trailerService.findAll();
+		return trailerMapper.toDtos(trailers);
+	}
+
+	@GetMapping
+	public List<TrailerDto> findAllByTrailerTemplateId(@RequestParam("templateId") Long templateId) {
+		List<Trailer> trailers = trailerService.findAllByTrailerTemplateId(templateId);
 		return trailerMapper.toDtos(trailers);
 	}
 

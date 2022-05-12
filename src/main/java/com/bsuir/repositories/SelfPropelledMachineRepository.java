@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface SelfPropelledMachineRepository extends JpaRepository<SelfPropelledMachine, Long> {
 
-
     List<SelfPropelledMachine> findAllByMachineTemplateId(Long machineTemplateId);
 
 }

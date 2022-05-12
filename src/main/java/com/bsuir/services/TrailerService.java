@@ -8,6 +8,8 @@ public interface TrailerService {
 
 	List<Trailer> findAll();
 
+	List<Trailer> findAllByTrailerTemplateId(Long templateId);
+
 	Trailer findById(Long id);
 
 	Trailer save(Trailer trailer);

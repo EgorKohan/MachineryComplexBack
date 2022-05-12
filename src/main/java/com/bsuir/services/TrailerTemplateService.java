@@ -17,4 +17,11 @@ public interface TrailerTemplateService {
 	void delete(TrailerTemplate template);
 
 	void deleteById(Long id);
+
+	boolean isExistsById(Long id);
+
+	boolean isExistsByTrailerName(String trailerName);
+
+	boolean isExistsByCodeId(String codeId);
+
 }
