@@ -31,8 +31,8 @@ public class SelfPropelledMachineController {
         return machineMapper.toDtos(machines);
     }
 
-    @GetMapping()
-    public List<SelfPropelledMachineDto> findAllByMachineTemplateId(@RequestParam("templateId") Long templateId) {
+    @GetMapping(params = {"templateId"})
+    public List<SelfPropelledMachineDto> findAllByMachineTemplateId(@RequestParam(value = "templateId", required = false) Long templateId) {
         List<SelfPropelledMachine> machines = machineService.findAllByMachineTemplateId(templateId);
         return machineMapper.toDtos(machines);
     }

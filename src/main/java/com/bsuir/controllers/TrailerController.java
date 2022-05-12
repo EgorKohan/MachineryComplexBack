@@ -30,8 +30,8 @@ public class TrailerController {
 		return trailerMapper.toDtos(trailers);
 	}
 
-	@GetMapping
-	public List<TrailerDto> findAllByTrailerTemplateId(@RequestParam("templateId") Long templateId) {
+	@GetMapping(params = {"templateId"})
+	public List<TrailerDto> findAllByTrailerTemplateId(@RequestParam(value = "templateId", required = false) Long templateId) {
 		List<Trailer> trailers = trailerService.findAllByTrailerTemplateId(templateId);
 		return trailerMapper.toDtos(trailers);
 	}
