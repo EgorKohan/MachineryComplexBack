@@ -42,11 +42,13 @@ public class Trailer {
     @Column(name = "initial_cost")
     private BigDecimal initialCost;
 
-    @Column(name = "residualValue")
+    @Column(name = "residual_value")
     private BigDecimal residualValue;
 
     //technical readiness factor
     @Column(name = "trk")
     private Float trk;
+
+    private static final String PREFIX = "m";
 
 }

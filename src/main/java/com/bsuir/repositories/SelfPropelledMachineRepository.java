@@ -11,4 +11,6 @@ public interface SelfPropelledMachineRepository extends JpaRepository<SelfPropel
 
     List<SelfPropelledMachine> findAllByMachineTemplateId(Long machineTemplateId);
 
+    Long countSelfPropelledMachinesByMachineTemplateId(Long machineTemplateId);
+
 }

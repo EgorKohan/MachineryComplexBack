@@ -6,17 +6,19 @@ import java.util.List;
 
 public interface TrailerService {
 
-	List<Trailer> findAll();
+    List<Trailer> findAll();
 
-	List<Trailer> findAllByTrailerTemplateId(Long templateId);
+    List<Trailer> findAllByTrailerTemplateId(Long templateId);
 
-	Trailer findById(Long id);
+    Long countByTrailerTemplateId(Long templateId);
 
-	Trailer save(Trailer trailer);
+    Trailer findById(Long id);
 
-	Trailer update(Trailer trailer);
+    Trailer save(Trailer trailer);
 
-	void delete(Trailer trailer);
+    Trailer update(Trailer trailer);
 
-	void deleteById(Long id);
+    void delete(Trailer trailer);
+
+    void deleteById(Long id);
 }

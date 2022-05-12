@@ -36,6 +36,11 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -62,7 +67,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.7</version>
+            <version>1.6.8</version>
         </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
@@ -70,6 +75,14 @@
             <version>2.2.0</version>
         </dependency>
         <!-- OpenApi/Swagger -->
+
+        <!-- GAMS API -->
+        <dependency>
+            <groupId>com.gams.api</groupId>
+            <artifactId>gams-api</artifactId>
+            <version>39</version>
+        </dependency>
+        <!-- GAMS API -->
 
     </dependencies>
 

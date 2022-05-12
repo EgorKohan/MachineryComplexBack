@@ -30,6 +30,11 @@ public class WorkPlanServiceImpl implements WorkPlanService {
 	}
 
 	@Override
+	public List<WorkPlan> findAllByIds(List<Long> ids) {
+		return workPlanRepository.findAllByIdIn(ids);
+	}
+
+	@Override
 	public WorkPlan save(WorkPlan workPlan) {
 		return workPlanRepository.save(workPlan);
 	}

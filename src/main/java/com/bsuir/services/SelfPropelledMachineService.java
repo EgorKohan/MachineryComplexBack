@@ -10,6 +10,8 @@ public interface SelfPropelledMachineService {
 
     List<SelfPropelledMachine> findAllByMachineTemplateId(Long templateId);
 
+    Long countByMachineTemplateId(Long templateId);
+
     SelfPropelledMachine findById(Long id);
 
     SelfPropelledMachine save(SelfPropelledMachine template);

@@ -11,4 +11,6 @@ public interface TrailerRepository extends JpaRepository<Trailer, Long> {
 
     List<Trailer> findAllByTrailerTemplateId(Long trailerTemplateId);
 
+    Long countTrailersByTrailerTemplateId(Long trailerTemplateId);
+
 }

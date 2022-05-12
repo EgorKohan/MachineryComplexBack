@@ -31,9 +31,14 @@ public class SelfPropelledMachineServiceImpl implements SelfPropelledMachineServ
 
     @Override
     public List<SelfPropelledMachine> findAllByMachineTemplateId(Long templateId) {
-        if (!templateService.isExistsById(templateId))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Machine template with id " + templateId + " doesn't exist");
+        checkThatMachineTemplateIdExists(templateId);
         return machineRepository.findAllByMachineTemplateId(templateId);
+    }
+
+    @Override
+    public Long countByMachineTemplateId(Long templateId) {
+        checkThatMachineTemplateIdExists(templateId);
+        return machineRepository.countSelfPropelledMachinesByMachineTemplateId(templateId);
     }
 
     @Override
@@ -60,5 +65,10 @@ public class SelfPropelledMachineServiceImpl implements SelfPropelledMachineServ
     @Override
     public void deleteById(Long id) {
         machineRepository.deleteById(id);
+    }
+
+    private void checkThatMachineTemplateIdExists(Long templateId) {
+        if (!templateService.isExistsById(templateId))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Machine template with id " + templateId + " doesn't exist");
     }
 }

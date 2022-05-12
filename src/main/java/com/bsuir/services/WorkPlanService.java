@@ -10,6 +10,8 @@ public interface WorkPlanService {
 
 	WorkPlan findById(Long id);
 
+	List<WorkPlan> findAllByIds(List<Long> ids);
+
 	WorkPlan save(WorkPlan workPlan);
 
 	WorkPlan update(WorkPlan workPlan);

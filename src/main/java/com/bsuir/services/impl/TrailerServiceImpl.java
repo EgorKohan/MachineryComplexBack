@@ -31,9 +31,14 @@ public class TrailerServiceImpl implements TrailerService {
 
     @Override
     public List<Trailer> findAllByTrailerTemplateId(Long templateId) {
-        if(templateService.isExistsById(templateId))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trailer template with id " + templateId + " doesn't exist");
+        checkThatTrailerTemplateIdExists(templateId);
         return trailerRepository.findAllByTrailerTemplateId(templateId);
+    }
+
+    @Override
+    public Long countByTrailerTemplateId(Long templateId) {
+        checkThatTrailerTemplateIdExists(templateId);
+        return trailerRepository.countTrailersByTrailerTemplateId(templateId);
     }
 
     @Override
@@ -61,4 +66,10 @@ public class TrailerServiceImpl implements TrailerService {
     public void deleteById(Long id) {
         trailerRepository.deleteById(id);
     }
+
+    private void checkThatTrailerTemplateIdExists(Long templateId) {
+        if (templateService.isExistsById(templateId))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trailer template with id " + templateId + " doesn't exist");
+    }
+
 }
