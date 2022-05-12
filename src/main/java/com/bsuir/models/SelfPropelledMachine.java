@@ -9,8 +9,10 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @Entity
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "self_propelled_machines")
 public class SelfPropelledMachine {
 

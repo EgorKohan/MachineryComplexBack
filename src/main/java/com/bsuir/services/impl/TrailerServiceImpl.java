@@ -68,7 +68,7 @@ public class TrailerServiceImpl implements TrailerService {
     }
 
     private void checkThatTrailerTemplateIdExists(Long templateId) {
-        if (templateService.isExistsById(templateId))
+        if (!templateService.isExistsById(templateId))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trailer template with id " + templateId + " doesn't exist");
     }
 

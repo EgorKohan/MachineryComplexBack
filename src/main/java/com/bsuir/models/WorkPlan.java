@@ -1,24 +1,17 @@
 package com.bsuir.models;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @Entity
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "work_plans")
 public class WorkPlan {
 
@@ -27,12 +20,15 @@ public class WorkPlan {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private SelfPropelledMachine machine;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Trailer trailer;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private AgriculturalOperation operation;
 
     @Column(name = "work_per_shift")

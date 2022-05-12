@@ -1,8 +1,6 @@
 package com.bsuir.models;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
@@ -15,8 +13,10 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @Entity
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "trailer_templates")
 public class TrailerTemplate {
 
