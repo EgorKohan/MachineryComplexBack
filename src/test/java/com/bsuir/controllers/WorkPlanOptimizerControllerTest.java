@@ -133,49 +133,49 @@ class WorkPlanOptimizerControllerTest extends AbstractTest {
 
     private void savePredefinedWorksInDB() {
         List<List<Object>> list = new ArrayList<>();
-        list.add(Arrays.asList(1L, 1L, 5L, 7.8f));
-        list.add(Arrays.asList(1L, 1L, 5L, 7.8f));
-        list.add(Arrays.asList(1L, 1L, 5L, 7.8f));
+        list.add(Arrays.asList(1L, 1L, 784L, 7.8f));
+        list.add(Arrays.asList(1L, 1L, 784L, 7.8f));
+        list.add(Arrays.asList(1L, 1L, 784L, 7.8f));
         list.add(Arrays.asList(2L, 1L, 1L, 397.7f));
         list.add(Arrays.asList(3L, 1L, 1L, 22.8f));
-        list.add(Arrays.asList(3L, 2L, 4L, 25.4f));
-        list.add(Arrays.asList(3L, 2L, 5L, 27.9f));
-        list.add(Arrays.asList(4L, 1L, 2L, 4.3f));
-        list.add(Arrays.asList(4L, 1L, 2L, 4.3f));
-        list.add(Arrays.asList(4L, 1L, 2L, 4.3f));
-        list.add(Arrays.asList(4L, 1L, 2L, 4.3f));
-        list.add(Arrays.asList(4L, 1L, 3L, 4.45f));
-        list.add(Arrays.asList(4L, 1L, 3L, 4.45f));
-        list.add(Arrays.asList(4L, 1L, 4L, 4.45f));
-        list.add(Arrays.asList(4L, 1L, 3L, 4.45f));
-        list.add(Arrays.asList(4L, 1L, 4L, 4.4f));
-        list.add(Arrays.asList(4L, 1L, 4L, 4.4f));
-        list.add(Arrays.asList(4L, 1L, 4L, 4.4f));
-        list.add(Arrays.asList(4L, 1L, 4L, 4.4f));
-        list.add(Arrays.asList(4L, 1L, 5L, 6.3f));
-        list.add(Arrays.asList(4L, 1L, 5L, 6.3f));
-        list.add(Arrays.asList(4L, 1L, 5L, 6.3f));
-        list.add(Arrays.asList(4L, 1L, 5L, 6.3f));
-        list.add(Arrays.asList(5L, 3L, 3L, 8.1f));
-        list.add(Arrays.asList(5L, 2L, 3L, 18.1f));
-        list.add(Arrays.asList(5L, 3L, 3L, 19.2f));
-        list.add(Arrays.asList(5L, 2L, 3L, 7.8f));
-        list.add(Arrays.asList(6L, 4L, 3L, 11.0f));
-        list.add(Arrays.asList(6L, 6L, 3L, 11.0f));
+        list.add(Arrays.asList(3L, 3L, 783L, 25.4f));
+        list.add(Arrays.asList(3L, 3L, 784L, 27.9f));
+        list.add(Arrays.asList(4L, 1L, 778L, 4.3f));
+        list.add(Arrays.asList(4L, 1L, 778L, 4.3f));
+        list.add(Arrays.asList(4L, 1L, 778L, 4.3f));
+        list.add(Arrays.asList(4L, 1L, 778L, 4.3f));
+        list.add(Arrays.asList(4L, 1L, 781L, 4.45f));
+        list.add(Arrays.asList(4L, 1L, 781L, 4.45f));
+        list.add(Arrays.asList(4L, 1L, 783L, 4.45f));
+        list.add(Arrays.asList(4L, 1L, 781L, 4.45f));
+        list.add(Arrays.asList(4L, 1L, 783L, 4.4f));
+        list.add(Arrays.asList(4L, 1L, 783L, 4.4f));
+        list.add(Arrays.asList(4L, 1L, 783L, 4.4f));
+        list.add(Arrays.asList(4L, 1L, 783L, 4.4f));
+        list.add(Arrays.asList(4L, 1L, 784L, 6.3f));
+        list.add(Arrays.asList(4L, 1L, 784L, 6.3f));
+        list.add(Arrays.asList(4L, 1L, 784L, 6.3f));
+        list.add(Arrays.asList(4L, 1L, 784L, 6.3f));
+        list.add(Arrays.asList(5L, 4L, 781L, 8.1f));
+        list.add(Arrays.asList(5L, 3L, 781L, 18.1f));
+        list.add(Arrays.asList(5L, 4L, 781L, 19.2f));
+        list.add(Arrays.asList(5L, 3L, 781L, 7.8f));
+        list.add(Arrays.asList(6L, 6L, 781L, 11.0f));
+        list.add(Arrays.asList(6L, 6L, 781L, 11.0f));
         list.add(Arrays.asList(7L, 1L, 1L, 56.0f));
-        list.add(Arrays.asList(8L, 2L, 4L, 152.4f));
-        list.add(Arrays.asList(8L, 3L, 4L, 167.6f));
-        list.add(Arrays.asList(8L, 4L, 4L, 137.2f));
-        list.add(Arrays.asList(9L, 1L, 3L, 20.1f));
-        list.add(Arrays.asList(9L, 4L, 3L, 20.1f));
-        list.add(Arrays.asList(9L, 1L, 3L, 18.6f));
-        list.add(Arrays.asList(9L, 4L, 3L, 18.6f));
-        list.add(Arrays.asList(9L, 1L, 3L, 10.25f));
+        list.add(Arrays.asList(8L, 3L, 783L, 152.4f));
+        list.add(Arrays.asList(8L, 4L, 783L, 167.6f));
+        list.add(Arrays.asList(8L, 6L, 783L, 137.2f));
+        list.add(Arrays.asList(9L, 1L, 781L, 20.1f));
+        list.add(Arrays.asList(9L, 6L, 781L, 20.1f));
+        list.add(Arrays.asList(9L, 1L, 781L, 18.6f));
+        list.add(Arrays.asList(9L, 6L, 781L, 18.6f));
+        list.add(Arrays.asList(9L, 1L, 781L, 10.25f));
         list.forEach(list2 -> workPlanService.save(
                 new WorkPlan(null,
-                        selfPropelledMachineService.findById((Long) list2.get(0)),
-                        trailerService.findById((Long) list2.get(1)),
-                        agriculturalOperationService.findById((Long) list2.get(2)),
+                        selfPropelledMachineService.findById((Long) list2.get(1)),
+                        trailerService.findById((Long) list2.get(2)),
+                        agriculturalOperationService.findById((Long) list2.get(0)),
                         (Float) list2.get(3)
                 )));
     }

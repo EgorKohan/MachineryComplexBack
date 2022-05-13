@@ -19,15 +19,15 @@ public class WorkPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
     private SelfPropelledMachine machine;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
     private Trailer trailer;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
     private AgriculturalOperation operation;
 

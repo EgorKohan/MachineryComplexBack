@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.*;
@@ -113,8 +114,8 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
         Trailer trailer = workPlan.getTrailer();
         AgriculturalOperation operation = workPlan.getOperation();
 
-        String machineGAMSId = MACHINE.getPrefixLowRegister() + machine.getId();
-        String trailerGAMSId = TRAILER.getPrefixLowRegister() + trailer.getId();
+        String machineGAMSId = MACHINE.getPrefixLowRegister() + machine.getMachineTemplate().getId();
+        String trailerGAMSId = TRAILER.getPrefixLowRegister() + trailer.getTrailerTemplate().getId();
         String workVolumeGAMSId = OPERATION.getPrefixLowRegister() + operation.getId();
         String periodGAMSId = "p1";
 
