@@ -1,9 +1,6 @@
 package com.bsuir.services.impl;
 
-import com.bsuir.models.AgriculturalOperation;
-import com.bsuir.models.SelfPropelledMachine;
-import com.bsuir.models.Trailer;
-import com.bsuir.models.WorkPlan;
+import com.bsuir.models.*;
 import com.bsuir.services.SelfPropelledMachineService;
 import com.bsuir.services.TrailerService;
 import com.bsuir.services.WorkPlanOptimizer;
@@ -99,7 +96,7 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
         GAMSParameter dParameter = db.addParameter("D", 1, "продолжительность периодов неизменных условий");
         gamsVariables.getPeriodsLength().forEach((key, value) -> dParameter.addRecord(key).setValue(value));
 
-        GAMSParameter pParameter = db.addParameter("p", 4, "Aboba");
+        GAMSParameter pParameter = db.addParameter("p", 4, "");
         gamsVariables.getWorksPerShift().forEach((key, value) -> pParameter.addRecord(key).setValue(value));
 
         String model = FileReader.readFromResourceFile(PATH_TO_MODEL);
@@ -118,12 +115,12 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
     }
 
     private void fillGAMSObject(GAMSVariables gamsVariables, WorkPlan workPlan) {
-        SelfPropelledMachine machine = workPlan.getMachine();
-        Trailer trailer = workPlan.getTrailer();
+        SelfPropelledMachineTemplate machineTemplate = workPlan.getMachineTemplate();
+        TrailerTemplate trailerTemplate = workPlan.getTrailerTemplate();
         AgriculturalOperation operation = workPlan.getOperation();
 
-        String machineGAMSId = MACHINE.getPrefixLowRegister() + machine.getMachineTemplate().getId();
-        String trailerGAMSId = TRAILER.getPrefixLowRegister() + trailer.getTrailerTemplate().getId();
+        String machineGAMSId = MACHINE.getPrefixLowRegister() + machineTemplate.getId();
+        String trailerGAMSId = TRAILER.getPrefixLowRegister() + trailerTemplate.getId();
         String workVolumeGAMSId = OPERATION.getPrefixLowRegister() + operation.getId();
         String periodGAMSId = "p1";
 
@@ -133,8 +130,8 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
         gamsVariables.getPeriods().add(periodGAMSId);
 
         gamsVariables.getWorkVolumes().putIfAbsent(workVolumeGAMSId, operation.getWorkVolume());
-        gamsVariables.getMachinesCount().putIfAbsent(machineGAMSId, selfPropelledMachineService.countByMachineTemplateId(machine.getMachineTemplate().getId()));
-        gamsVariables.getTrailersCount().putIfAbsent(trailerGAMSId, trailerService.countByTrailerTemplateId(trailer.getTrailerTemplate().getId()));
+        gamsVariables.getMachinesCount().putIfAbsent(machineGAMSId, selfPropelledMachineService.countByMachineTemplateId(machineTemplate.getId()));
+        gamsVariables.getTrailersCount().putIfAbsent(trailerGAMSId, trailerService.countByTrailerTemplateId(trailerTemplate.getId()));
         gamsVariables.getPeriodsLength().putIfAbsent(periodGAMSId, 1L);
 
         gamsVariables.getWorksPerShift().putIfAbsent(

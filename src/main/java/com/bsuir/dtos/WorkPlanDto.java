@@ -12,11 +12,11 @@ public class WorkPlanDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    @NotNull(message = "Machine ID cannot be null")
-    private Long machineId;
+    @NotNull(message = "Machine template ID cannot be null")
+    private Long machineTemplateId;
 
-    @NotNull(message = "Trailer ID cannot be null")
-    private Long trailerId;
+    @NotNull(message = "Trailer template ID cannot be null")
+    private Long trailerTemplateId;
 
     @NotNull(message = "Agricultural operation ID cannot be null")
     private Long operationId;

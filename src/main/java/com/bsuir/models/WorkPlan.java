@@ -21,11 +21,11 @@ public class WorkPlan {
 
     @OneToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
-    private SelfPropelledMachine machine;
+    private SelfPropelledMachineTemplate machineTemplate;
 
     @OneToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
-    private Trailer trailer;
+    private TrailerTemplate trailerTemplate;
 
     @OneToOne(fetch = FetchType.EAGER)
     @ToString.Exclude

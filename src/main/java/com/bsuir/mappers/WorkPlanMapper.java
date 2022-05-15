@@ -1,13 +1,8 @@
 package com.bsuir.mappers;
 
 import com.bsuir.dtos.WorkPlanDto;
-import com.bsuir.models.AgriculturalOperation;
-import com.bsuir.models.SelfPropelledMachine;
-import com.bsuir.models.Trailer;
-import com.bsuir.models.WorkPlan;
-import com.bsuir.services.AgriculturalOperationService;
-import com.bsuir.services.SelfPropelledMachineService;
-import com.bsuir.services.TrailerService;
+import com.bsuir.models.*;
+import com.bsuir.services.*;
 import org.mapstruct.BeforeMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,31 +15,31 @@ import java.util.List;
 public abstract class WorkPlanMapper {
 
 	@Autowired
-	protected SelfPropelledMachineService machineService;
+	protected SelfPropelledMachineTemplateService machineTemplateService;
 
 	@Autowired
-	protected TrailerService trailerService;
+	protected TrailerTemplateService trailerTemplateService;
 
 	@Autowired
 	protected AgriculturalOperationService agriculturalOperationService;
 
 	@BeforeMapping
 	protected void setUp(@MappingTarget WorkPlan workPlan, WorkPlanDto dto) {
-		SelfPropelledMachine machine = machineService.findById(dto.getMachineId());
-		workPlan.setMachine(machine);
-		Trailer trailer = trailerService.findById(dto.getTrailerId());
-		workPlan.setTrailer(trailer);
+		SelfPropelledMachineTemplate machineTemplate = machineTemplateService.findById(dto.getMachineTemplateId());
+		workPlan.setMachineTemplate(machineTemplate);
+		TrailerTemplate trailerTemplate = trailerTemplateService.findById(dto.getTrailerTemplateId());
+		workPlan.setTrailerTemplate(trailerTemplate);
 		AgriculturalOperation operation = agriculturalOperationService.findById(dto.getOperationId());
 		workPlan.setOperation(operation);
 	}
 
-	@Mapping(target = "machine", ignore = true)
-	@Mapping(target = "trailer", ignore = true)
+	@Mapping(target = "machineTemplate", ignore = true)
+	@Mapping(target = "trailerTemplate", ignore = true)
 	@Mapping(target = "operation", ignore = true)
 	public abstract WorkPlan toWorkPlan(WorkPlanDto dto);
 
-	@Mapping(target = "machineId", source = "workPlan.machine.id")
-	@Mapping(target = "trailerId", source = "workPlan.trailer.id")
+	@Mapping(target = "machineTemplateId", source = "workPlan.machineTemplate.id")
+	@Mapping(target = "trailerTemplateId", source = "workPlan.trailerTemplate.id")
 	@Mapping(target = "operationId", source = "workPlan.operation.id")
 	public abstract WorkPlanDto toDto(WorkPlan workPlan);
 
