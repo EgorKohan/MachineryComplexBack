@@ -57,6 +57,7 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
 
     @Override
     public Double calculateMissingEquipmentCost(Collection<WorkPlan> workPlans) {
+        log.info("Path to gams: {}", pathToGams);
         String javaLibraryPathValue = System.getProperty(JAVA_LIBRARY_PATH);
         System.setProperty(JAVA_LIBRARY_PATH, pathToGams);
 
