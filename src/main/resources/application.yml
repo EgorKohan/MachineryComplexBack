@@ -6,6 +6,8 @@ server:
   error:
     include-message: always
 
+gams:
+  path: C:\GAMS\39\apifiles\Java\api
 ---
 
 spring:

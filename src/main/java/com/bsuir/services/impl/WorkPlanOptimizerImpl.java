@@ -12,8 +12,8 @@ import com.gams.api.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.*;
@@ -27,6 +27,9 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
 
     private final TrailerService trailerService;
     private final SelfPropelledMachineService selfPropelledMachineService;
+    private static final String JAVA_LIBRARY_PATH = "java.library.path";
+    @Value("${gams.path}")
+    private String pathToGams;
 
     @Autowired
     public WorkPlanOptimizerImpl(
@@ -54,6 +57,8 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
 
     @Override
     public Double calculateMissingEquipmentCost(Collection<WorkPlan> workPlans) {
+        String javaLibraryPathValue = System.getProperty(JAVA_LIBRARY_PATH);
+        System.setProperty(JAVA_LIBRARY_PATH, pathToGams);
 
         GAMSVariables gamsVariables = new GAMSVariables();
 
@@ -105,6 +110,8 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
 
         double f = gamsJob.OutDB().getVariable("F").getFirstRecord().getLevel();
         log.info("F: {}", f);
+
+        System.setProperty(JAVA_LIBRARY_PATH, javaLibraryPathValue);
 
         return f;
     }
