@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,7 +38,7 @@ public class ErrorHandlingControllerAdvice {
         ValidationErrorResponse validationErrorResponse = new ValidationErrorResponse(violations);
         return new ErrorResponse(
                 validationErrorResponse,
-                HttpStatus.BAD_GATEWAY,
+                HttpStatus.BAD_REQUEST,
                 request.getServletPath()
         );
     }
@@ -55,7 +56,25 @@ public class ErrorHandlingControllerAdvice {
         ValidationErrorResponse validationErrorResponse = new ValidationErrorResponse(violations);
         return new ErrorResponse(
                 validationErrorResponse,
-                HttpStatus.NOT_FOUND,
+                HttpStatus.BAD_REQUEST,
+                request.getServletPath()
+        );
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BindException.class)
+    public ErrorResponse onBindException(
+            BindException e,
+            HttpServletRequest request
+    ) {
+        List<Violation> violations = e.getBindingResult().getAllErrors().stream()
+                .map(error -> new Violation(error.getCode(), error.getDefaultMessage()))
+                .collect(Collectors.toList());
+        ValidationErrorResponse validationErrorResponse = new ValidationErrorResponse(violations);
+        return new ErrorResponse(
+                validationErrorResponse,
+                HttpStatus.BAD_REQUEST,
                 request.getServletPath()
         );
     }

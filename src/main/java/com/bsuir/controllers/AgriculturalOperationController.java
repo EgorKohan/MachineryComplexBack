@@ -34,16 +34,16 @@ public class AgriculturalOperationController {
         return operationMapper.toDto(operation);
     }
 
-    @PostMapping
-    public AgriculturalOperationDto create(@Valid @RequestBody AgriculturalOperationDto dto) {
+    @PostMapping(consumes = "multipart/form-data")
+    public AgriculturalOperationDto create(@Valid @ModelAttribute AgriculturalOperationDto dto) {
         AgriculturalOperation operation = operationMapper.toOperation(dto);
         AgriculturalOperation savedOperation = operationService.save(operation);
         return operationMapper.toDto(savedOperation);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public AgriculturalOperationDto update(
-            @Valid @RequestBody AgriculturalOperationDto dto,
+            @Valid @ModelAttribute AgriculturalOperationDto dto,
             @PathVariable("id") Long id
     ) {
         dto.setId(id);

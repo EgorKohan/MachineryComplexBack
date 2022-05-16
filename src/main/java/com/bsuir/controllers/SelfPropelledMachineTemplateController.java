@@ -35,16 +35,16 @@ public class SelfPropelledMachineTemplateController {
         return machineTemplateMapper.toDto(template);
     }
 
-    @PostMapping
-    public SelfPropelledMachineTemplateDto create(@Valid @RequestBody SelfPropelledMachineTemplateDto dto) {
+    @PostMapping(consumes = "multipart/form-data")
+    public SelfPropelledMachineTemplateDto create(@Valid @ModelAttribute SelfPropelledMachineTemplateDto dto) {
         SelfPropelledMachineTemplate template = machineTemplateMapper.toTemplate(dto);
         SelfPropelledMachineTemplate savedTemplate = machineTemplateService.save(template);
         return machineTemplateMapper.toDto(savedTemplate);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public SelfPropelledMachineTemplateDto update(
-            @Valid @RequestBody SelfPropelledMachineTemplateDto dto,
+            @Valid @ModelAttribute SelfPropelledMachineTemplateDto dto,
             @PathVariable("id") Long id
     ) {
         dto.setId(id);

@@ -35,16 +35,16 @@ public class WorkPlanController {
         return workPlanMapper.toDto(workPlan);
     }
 
-    @PostMapping
-    public WorkPlanDto create(@Valid @RequestBody WorkPlanDto dto) {
+    @PostMapping(consumes = "multipart/form-data")
+    public WorkPlanDto create(@Valid @ModelAttribute WorkPlanDto dto) {
         WorkPlan workPlan = workPlanMapper.toWorkPlan(dto);
         WorkPlan savedWorkPlan = workPlanService.save(workPlan);
         return workPlanMapper.toDto(savedWorkPlan);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public WorkPlanDto update(
-            @Valid @RequestBody WorkPlanDto dto,
+            @Valid @ModelAttribute WorkPlanDto dto,
             @PathVariable("id") Long id
     ) {
         dto.setId(id);

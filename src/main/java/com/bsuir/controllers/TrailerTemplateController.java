@@ -34,17 +34,16 @@ public class TrailerTemplateController {
         return trailerTemplateMapper.toDto(trailerTemplate);
     }
 
-    @PostMapping
-    @ModelAttribute
-    public TrailerTemplateDto create(@Valid @RequestBody TrailerTemplateDto dto) {
+    @PostMapping(consumes = "multipart/form-data")
+    public TrailerTemplateDto create(@Valid @ModelAttribute TrailerTemplateDto dto) {
         TrailerTemplate trailerTemplate = trailerTemplateMapper.toTemplate(dto);
         TrailerTemplate savedTrailerTemplate = trailerTemplateService.save(trailerTemplate);
         return trailerTemplateMapper.toDto(savedTrailerTemplate);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public TrailerTemplateDto update(
-            @Valid @RequestBody TrailerTemplateDto dto,
+            @Valid @ModelAttribute TrailerTemplateDto dto,
             @PathVariable("id") Long id
     ) {
         dto.setId(id);

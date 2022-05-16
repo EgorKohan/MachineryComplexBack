@@ -40,16 +40,16 @@ public class TrailerController {
         return trailerMapper.toDto(trailer);
     }
 
-    @PostMapping
-    public TrailerDto create(@Valid @RequestBody TrailerDto dto) {
+    @PostMapping(consumes = "multipart/form-data")
+    public TrailerDto create(@Valid @ModelAttribute TrailerDto dto) {
         Trailer trailer = trailerMapper.toTrailer(dto);
         Trailer savedTrailer = trailerService.save(trailer);
         return trailerMapper.toDto(savedTrailer);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public TrailerDto update(
-            @Valid @RequestBody TrailerDto dto,
+            @Valid @ModelAttribute TrailerDto dto,
             @PathVariable("id") Long id
     ) {
         dto.setId(id);
