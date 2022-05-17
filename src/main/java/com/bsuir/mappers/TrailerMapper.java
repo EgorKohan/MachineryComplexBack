@@ -25,6 +25,7 @@ public abstract class TrailerMapper {
 	}
 
 	@Mapping(target = "trailerTemplate", ignore = true)
+	@Mapping(target = "pathToPhoto", ignore = true)
 	public abstract Trailer toTrailer(TrailerDto dto);
 
 	@Mapping(target = "trailerTemplateId", source = "trailer.trailerTemplate.id")

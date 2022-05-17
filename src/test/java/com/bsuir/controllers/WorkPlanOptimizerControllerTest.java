@@ -3,11 +3,13 @@ package com.bsuir.controllers;
 import com.bsuir.AbstractTest;
 import com.bsuir.models.*;
 import com.bsuir.services.*;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 
+@Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class WorkPlanOptimizerControllerTest extends AbstractTest {
 
@@ -63,7 +66,7 @@ class WorkPlanOptimizerControllerTest extends AbstractTest {
                 12,
                 BigDecimal.valueOf(10.1),
                 BigDecimal.valueOf(10.2),
-                0.5f
+                0.5f, ""
         );
     }
 
@@ -76,7 +79,7 @@ class WorkPlanOptimizerControllerTest extends AbstractTest {
                 12,
                 BigDecimal.valueOf(10.1),
                 BigDecimal.valueOf(10.2),
-                0.5f
+                0.5f, ""
         );
     }
 

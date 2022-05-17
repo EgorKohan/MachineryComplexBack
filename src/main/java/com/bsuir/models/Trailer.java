@@ -1,9 +1,11 @@
 package com.bsuir.models;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -41,4 +43,19 @@ public class Trailer {
     @Column(name = "trk")
     private Float trk;
 
+    @Column(name = "path_to_photo")
+    private String pathToPhoto;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Trailer trailer = (Trailer) o;
+        return id != null && Objects.equals(id, trailer.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

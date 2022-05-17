@@ -43,6 +43,9 @@ public class SelfPropelledMachine {
     @Column(name = "trk")
     private Float trk;
 
+    @Column(name = "path_to_photo")
+    private String pathToPhoto;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

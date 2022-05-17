@@ -2,6 +2,7 @@ package com.bsuir.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -41,4 +42,11 @@ public class TrailerDto {
     @Min(value = 0, message = "Technical readiness factor cannot be less than 0")
     @Max(value = 1, message = "Technical readiness factor cannot be more than 1")
     private Float trk;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private MultipartFile photo;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String pathToPhoto;
+
 }

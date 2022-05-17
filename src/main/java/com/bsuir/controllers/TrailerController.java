@@ -4,10 +4,13 @@ import com.bsuir.dtos.TrailerDto;
 import com.bsuir.mappers.TrailerMapper;
 import com.bsuir.models.Trailer;
 import com.bsuir.services.TrailerService;
+import com.bsuir.utils.FileUploadUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.bsuir.ApplicationConstants.TRAILERS_UPLOAD_DIR;
 
 @RestController
 @RequestMapping("/api/v1/trailers")
@@ -42,7 +45,9 @@ public class TrailerController {
 
     @PostMapping(consumes = "multipart/form-data")
     public TrailerDto create(@Valid @ModelAttribute TrailerDto dto) {
+        String pathToPhoto = FileUploadUtil.saveFile(TRAILERS_UPLOAD_DIR, dto.getPhoto());
         Trailer trailer = trailerMapper.toTrailer(dto);
+        trailer.setPathToPhoto(pathToPhoto);
         Trailer savedTrailer = trailerService.save(trailer);
         return trailerMapper.toDto(savedTrailer);
     }

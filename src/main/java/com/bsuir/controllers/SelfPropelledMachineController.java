@@ -4,10 +4,13 @@ import com.bsuir.dtos.SelfPropelledMachineDto;
 import com.bsuir.mappers.SelfPropelledMachineMapper;
 import com.bsuir.models.SelfPropelledMachine;
 import com.bsuir.services.SelfPropelledMachineService;
+import com.bsuir.utils.FileUploadUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.bsuir.ApplicationConstants.SELF_PROPELLED_MACHINES_UPLOAD_DIR;
 
 @RestController
 @RequestMapping("/api/v1/machines")
@@ -43,7 +46,9 @@ public class SelfPropelledMachineController {
 
     @PostMapping(consumes = {"multipart/form-data"})
     public SelfPropelledMachineDto create(@Valid @ModelAttribute SelfPropelledMachineDto dto) {
+        String pathToPhoto = FileUploadUtil.saveFile(SELF_PROPELLED_MACHINES_UPLOAD_DIR, dto.getPhoto());
         SelfPropelledMachine machine = machineMapper.toMachine(dto);
+        machine.setPathToPhoto(pathToPhoto);
         SelfPropelledMachine savedMachine = machineService.save(machine);
         return machineMapper.toDto(savedMachine);
     }

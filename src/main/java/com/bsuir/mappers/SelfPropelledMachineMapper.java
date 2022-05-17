@@ -25,6 +25,7 @@ public abstract class SelfPropelledMachineMapper {
     }
 
     @Mapping(target = "machineTemplate", ignore = true)
+    @Mapping(target = "pathToPhoto", ignore = true)
     public abstract SelfPropelledMachine toMachine(SelfPropelledMachineDto dto);
 
     @Mapping(target = "machineTemplateId", source = "machine.machineTemplate.id")
