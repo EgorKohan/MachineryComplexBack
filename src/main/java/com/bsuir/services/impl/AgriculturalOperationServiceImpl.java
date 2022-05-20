@@ -26,7 +26,7 @@ public class AgriculturalOperationServiceImpl implements AgriculturalOperationSe
 	@Override
 	public AgriculturalOperation findById(Long id) {
 		return operationRepository.findById(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Agricultural operation with id " + id + " not found"));
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Agricultural operation with id " + id + " not found"));
 	}
 
 	@Override

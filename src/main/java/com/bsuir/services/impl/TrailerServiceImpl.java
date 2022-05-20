@@ -44,7 +44,7 @@ public class TrailerServiceImpl implements TrailerService {
     @Override
     public Trailer findById(Long id) {
         return trailerRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trailer with id " + id + " not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trailer with id " + id + " not found"));
     }
 
     @Override
@@ -69,7 +69,7 @@ public class TrailerServiceImpl implements TrailerService {
 
     private void checkThatTrailerTemplateIdExists(Long templateId) {
         if (!templateService.isExistsById(templateId))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trailer template with id " + templateId + " doesn't exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Trailer template with id " + templateId + " doesn't exist");
     }
 
 }

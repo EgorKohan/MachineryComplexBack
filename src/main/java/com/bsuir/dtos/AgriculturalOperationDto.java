@@ -3,11 +3,12 @@ package com.bsuir.dtos;
 import com.bsuir.models.EUnit;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class AgriculturalOperationDto {
@@ -25,9 +26,11 @@ public class AgriculturalOperationDto {
     @NotNull(message = "Unit cannot be null")
     private EUnit unit;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "Start date cannot be null")
-    private LocalDateTime startDate;
+    private Date startDate;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "End date cannot be null")
-    private LocalDateTime endDate;
+    private Date endDate;
 }

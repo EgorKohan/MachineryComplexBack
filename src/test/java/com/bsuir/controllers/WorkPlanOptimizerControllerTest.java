@@ -131,7 +131,7 @@ class WorkPlanOptimizerControllerTest extends AbstractTest {
 
     private void savePredefinedOperationsInDB() {
         workVolumes.forEach((name, volume) ->
-                agriculturalOperationService.save(new AgriculturalOperation(null, name, volume, EUnit.HECTARE, LocalDateTime.now(), LocalDateTime.now()))
+                agriculturalOperationService.save(new AgriculturalOperation(null, name, volume, EUnit.HECTARE, new Date(), new Date()))
         );
     }
 

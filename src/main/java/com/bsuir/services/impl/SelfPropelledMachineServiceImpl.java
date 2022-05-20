@@ -44,7 +44,7 @@ public class SelfPropelledMachineServiceImpl implements SelfPropelledMachineServ
     @Override
     public SelfPropelledMachine findById(Long id) {
         return machineRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Machine with id " + id + " not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Machine with id " + id + " not found"));
     }
 
     @Override
@@ -69,6 +69,6 @@ public class SelfPropelledMachineServiceImpl implements SelfPropelledMachineServ
 
     private void checkThatMachineTemplateIdExists(Long templateId) {
         if (!templateService.isExistsById(templateId))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Machine template with id " + templateId + " doesn't exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Machine template with id " + templateId + " doesn't exist");
     }
 }

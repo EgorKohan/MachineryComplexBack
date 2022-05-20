@@ -35,7 +35,7 @@ public class AgriculturalOperationController {
     }
 
     @PostMapping(consumes = "multipart/form-data")
-    public AgriculturalOperationDto create(@Valid @ModelAttribute AgriculturalOperationDto dto) {
+    public AgriculturalOperationDto create(@ModelAttribute("dto") @Valid AgriculturalOperationDto dto) {
         AgriculturalOperation operation = operationMapper.toOperation(dto);
         AgriculturalOperation savedOperation = operationService.save(operation);
         return operationMapper.toDto(savedOperation);
@@ -43,7 +43,7 @@ public class AgriculturalOperationController {
 
     @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public AgriculturalOperationDto update(
-            @Valid @ModelAttribute AgriculturalOperationDto dto,
+            @ModelAttribute("dto") @Valid AgriculturalOperationDto dto,
             @PathVariable("id") Long id
     ) {
         dto.setId(id);

@@ -26,7 +26,7 @@ public class WorkPlanServiceImpl implements WorkPlanService {
     @Override
     public WorkPlan findById(Long id) {
         return workPlanRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Work plan with id " + id + " not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Work plan with id " + id + " not found"));
     }
 
     @Override

@@ -21,13 +21,13 @@ public class SelfPropelledMachineTemplateServiceImpl implements SelfPropelledMac
     @Override
     public SelfPropelledMachineTemplate findById(Long id) {
         return machineTemplateRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Machine template with id " + id + " not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Machine template with id " + id + " not found"));
     }
 
     @Override
     public SelfPropelledMachineTemplate findByMachineName(String machineName) {
         return machineTemplateRepository.findByMachineName(machineName).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Machine template with name " + machineName + " not found")
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Machine template with name " + machineName + " not found")
         );
     }
 
@@ -71,7 +71,7 @@ public class SelfPropelledMachineTemplateServiceImpl implements SelfPropelledMac
     }
 
     private void checkMachineNameUniqueness(String machineName) {
-        if(isExistsByMachineName(machineName)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Machine template with machine name " + machineName + " is exists");
+        if(isExistsByMachineName(machineName)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Machine template with machine name " + machineName + " is exists");
     }
 
 }
