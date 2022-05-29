@@ -1,5 +1,6 @@
 package com.bsuir.advices;
 
+import com.bsuir.exceptions.CustomValidationException;
 import com.bsuir.validation.ValidationErrorResponse;
 import com.bsuir.validation.Violation;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -53,6 +54,22 @@ public class ErrorHandlingControllerAdvice {
         List<Violation> violations = e.getBindingResult().getFieldErrors().stream()
                 .map(error -> new Violation(error.getField(), error.getDefaultMessage()))
                 .collect(Collectors.toList());
+        ValidationErrorResponse validationErrorResponse = new ValidationErrorResponse(violations);
+        return new ErrorResponse(
+                validationErrorResponse,
+                HttpStatus.BAD_REQUEST,
+                request.getServletPath()
+        );
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CustomValidationException.class)
+    public ErrorResponse onCustomValidationException(
+            CustomValidationException e,
+            HttpServletRequest request
+    ) {
+        List<Violation> violations = e.getViolations();
         ValidationErrorResponse validationErrorResponse = new ValidationErrorResponse(violations);
         return new ErrorResponse(
                 validationErrorResponse,

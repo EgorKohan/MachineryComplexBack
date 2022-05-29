@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,20 +20,21 @@ public class WorkPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
+    @OneToOne(fetch = FetchType.EAGER)
     private SelfPropelledMachineTemplate machineTemplate;
 
-    @OneToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
+    @OneToOne(fetch = FetchType.EAGER)
     private TrailerTemplate trailerTemplate;
 
-    @OneToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
+    @OneToOne(fetch = FetchType.EAGER)
     private AgriculturalOperation operation;
 
-    @Column(name = "work_per_shift")
-    private Float workPerShift;
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL, mappedBy = "workPlan")
+    private Set<Period> periods;
 
     @Override
     public boolean equals(Object o) {

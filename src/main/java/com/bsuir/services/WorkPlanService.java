@@ -6,17 +6,17 @@ import java.util.List;
 
 public interface WorkPlanService {
 
-	List<WorkPlan> findAll();
+    List<WorkPlan> findAll();
 
-	WorkPlan findById(Long id);
+    WorkPlan findById(Long id);
 
-	List<WorkPlan> findAllByIds(List<Long> ids);
+    List<WorkPlan> findAllByIds(List<Long> ids);
 
-	WorkPlan save(WorkPlan workPlan);
+    WorkPlan save(WorkPlan workPlan);
 
-	WorkPlan update(WorkPlan workPlan);
+    WorkPlan update(WorkPlan workPlan);
 
-	void delete(WorkPlan workPlan);
+    void delete(WorkPlan workPlan);
 
-	void deleteById(Long id);
+    void deleteById(Long id);
 }

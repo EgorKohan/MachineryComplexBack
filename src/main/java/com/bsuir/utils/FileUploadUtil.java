@@ -21,6 +21,8 @@ public class FileUploadUtil {
 
     public static String checkAndGetImageType(String filename) {
         String[] nameAndType = filename.split("\\.");
+        if (nameAndType.length <= 1)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, INVALID_IMAGE_TYPE_ERROR_MESSAGE);
         String type = nameAndType[1];
         if (!type.matches(IMAGE_TYPE_REGEXP))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, INVALID_IMAGE_TYPE_ERROR_MESSAGE);

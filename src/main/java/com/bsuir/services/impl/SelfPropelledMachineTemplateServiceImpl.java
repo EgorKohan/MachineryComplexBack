@@ -31,7 +31,6 @@ public class SelfPropelledMachineTemplateServiceImpl implements SelfPropelledMac
         );
     }
 
-
     @Override
     public boolean isExistsById(Long id) {
         return machineTemplateRepository.existsById(id);
@@ -71,7 +70,8 @@ public class SelfPropelledMachineTemplateServiceImpl implements SelfPropelledMac
     }
 
     private void checkMachineNameUniqueness(String machineName) {
-        if(isExistsByMachineName(machineName)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Machine template with machine name " + machineName + " is exists");
+        if (isExistsByMachineName(machineName))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Machine template with machine name " + machineName + " is exists");
     }
 
 }

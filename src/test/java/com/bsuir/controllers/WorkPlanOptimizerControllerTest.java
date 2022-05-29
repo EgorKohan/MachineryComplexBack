@@ -9,9 +9,8 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-import java.io.File;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -108,6 +107,24 @@ class WorkPlanOptimizerControllerTest extends AbstractTest {
             "t5", 3
     );
 
+    private final Map<String, Date> periodsStartDate = Map.of(
+            "1", Date.from(Instant.parse("2022-05-05T00:00:00.00Z")),
+            "2", Date.from(Instant.parse("2022-03-05T00:00:00.00Z")),
+            "3", Date.from(Instant.parse("2022-07-01T00:00:00.00Z")),
+            "4", Date.from(Instant.parse("2022-04-15T00:00:00.00Z")),
+            "5", Date.from(Instant.parse("2022-01-05T00:00:00.00Z")),
+            "6", Date.from(Instant.parse("2022-03-18T00:00:00.00Z"))
+    );
+
+    private final Map<String, Date> periodsEndDate = Map.of(
+            "1", Date.from(Instant.parse("2022-05-10T00:00:00.00Z")),
+            "2", Date.from(Instant.parse("2022-03-09T00:00:00.00Z")),
+            "3", Date.from(Instant.parse("2022-07-07T00:00:00.00Z")),
+            "4", Date.from(Instant.parse("2022-04-19T00:00:00.00Z")),
+            "5", Date.from(Instant.parse("2022-01-07T00:00:00.00Z")),
+            "6", Date.from(Instant.parse("2022-03-27T00:00:00.00Z"))
+    );
+
     private void savePredefinedMachinesInDB() {
         List<SelfPropelledMachineTemplate> all = selfPropelledMachineTemplateService.findAll();
         all.forEach(template -> {
@@ -131,38 +148,45 @@ class WorkPlanOptimizerControllerTest extends AbstractTest {
 
     private void savePredefinedOperationsInDB() {
         workVolumes.forEach((name, volume) ->
-                agriculturalOperationService.save(new AgriculturalOperation(null, name, volume, EUnit.HECTARE, new Date(), new Date()))
+                agriculturalOperationService.save(
+                        new AgriculturalOperation(
+                                null,
+                                name,
+                                volume,
+                                EUnit.HECTARE,
+                                Date.from(Instant.parse("1970-01-01T00:00:00.00Z")),
+                                Date.from(Instant.parse("2555-01-01T00:00:00.00Z"))
+                        )
+                )
         );
     }
 
     private void savePredefinedWorksInDB() {
         List<List<Object>> list = new ArrayList<>();
-        list.add(Arrays.asList(1L, 1L, 5L, 7.8F));
-        list.add(Arrays.asList(2L, 1L, 1L, 397.7F));
-        list.add(Arrays.asList(3L, 1L, 1L, 22.8F));
-        list.add(Arrays.asList(3L, 2L, 4L, 25.4F));
-        list.add(Arrays.asList(3L, 2L, 5L, 27.9F));
-        list.add(Arrays.asList(4L, 1L, 2L, 4.3F));
-        list.add(Arrays.asList(4L, 1L, 3L, 4.45F));
-        list.add(Arrays.asList(4L, 1L, 4L, 4.4F));
-        list.add(Arrays.asList(4L, 1L, 5L, 6.3F));
-        list.add(Arrays.asList(5L, 3L, 3L, 19.2F));
-        list.add(Arrays.asList(5L, 2L, 3L, 7.8F));
-        list.add(Arrays.asList(6L, 4L, 3L, 11.0F));
-        list.add(Arrays.asList(6L, 5L, 3L, 11.0F));
-        list.add(Arrays.asList(7L, 1L, 1L, 56.0F));
-        list.add(Arrays.asList(8L, 2L, 4L, 152.4F));
-        list.add(Arrays.asList(8L, 3L, 4L, 167.6F));
-        list.add(Arrays.asList(8L, 4L, 4L, 137.2F));
-        list.add(Arrays.asList(9L, 1L, 3L, 10.25F));
-        list.add(Arrays.asList(9L, 4L, 3L, 10.25F));
-        list.forEach(list2 -> workPlanService.save(
-                new WorkPlan(null,
-                        selfPropelledMachineTemplateService.findById((Long) list2.get(1)),
-                        trailerTemplateService.findById((Long) list2.get(2)),
-                        agriculturalOperationService.findById((Long) list2.get(0)),
-                        (Float) list2.get(3)
-                )));
+        list.add(Arrays.asList(1L, 1L, 5L, "2", 7.8F));
+        list.add(Arrays.asList(2L, 1L, 1L, "3", 397.7F));
+        list.add(Arrays.asList(3L, 1L, 1L, "4", 22.8F));
+        list.add(Arrays.asList(3L, 2L, 5L, "6", 27.9F));
+        list.add(Arrays.asList(4L, 1L, 2L, "6", 4.3F));
+        list.add(Arrays.asList(4L, 1L, 5L, "2", 6.3F));
+        list.add(Arrays.asList(5L, 3L, 3L, "3", 19.2F));
+        list.add(Arrays.asList(6L, 4L, 3L, "1", 11.0F));
+        list.add(Arrays.asList(6L, 5L, 3L, "2", 11.0F));
+        list.add(Arrays.asList(7L, 1L, 1L, "3", 56.0F));
+        list.forEach(list2 -> {
+            WorkPlan plan = new WorkPlan(null,
+                    selfPropelledMachineTemplateService.findById((Long) list2.get(1)),
+                    trailerTemplateService.findById((Long) list2.get(2)),
+                    agriculturalOperationService.findById((Long) list2.get(0)),
+                    new HashSet<>()
+            );
+            plan.setPeriods(
+                    Set.of(
+                            new Period(null, plan, periodsStartDate.get(list2.get(3)), periodsEndDate.get(list2.get(3)), (Float) list2.get(4))
+                    )
+            );
+            workPlanService.save(plan);
+        });
     }
 
     @Test
@@ -182,6 +206,7 @@ class WorkPlanOptimizerControllerTest extends AbstractTest {
                 .log().all()
                 .post("/api/v1/optimize")
                 .then()
+                .log().all()
                 .assertThat().statusCode(HttpStatus.OK.value());
     }
 

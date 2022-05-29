@@ -63,7 +63,8 @@ public class TrailerTemplateServiceImpl implements TrailerTemplateService {
     }
 
     private void checkTrailerNameUniqueness(String trailerName) {
-        if(isExistsByTrailerName(trailerName)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Trailer template with trailer name " + trailerName + " is exists");
+        if (isExistsByTrailerName(trailerName))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Trailer template with trailer name " + trailerName + " is exists");
     }
 
 }

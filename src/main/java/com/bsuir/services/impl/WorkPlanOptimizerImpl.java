@@ -1,9 +1,11 @@
 package com.bsuir.services.impl;
 
+import com.bsuir.mappers.AgriculturalOperationMapper;
+import com.bsuir.mappers.PeriodMapper;
+import com.bsuir.mappers.SelfPropelledMachineTemplateMapper;
+import com.bsuir.mappers.TrailerTemplateMapper;
 import com.bsuir.models.*;
-import com.bsuir.services.SelfPropelledMachineService;
-import com.bsuir.services.TrailerService;
-import com.bsuir.services.WorkPlanOptimizer;
+import com.bsuir.services.*;
 import com.bsuir.utils.FileReader;
 import com.gams.api.*;
 import lombok.Data;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static com.bsuir.ApplicationConstants.PATH_TO_MODEL;
 import static com.bsuir.models.PrefixEnum.*;
@@ -24,6 +27,15 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
 
     private final TrailerService trailerService;
     private final SelfPropelledMachineService selfPropelledMachineService;
+    private final TrailerTemplateService trailerTemplateService;
+    private final SelfPropelledMachineTemplateService selfPropelledMachineTemplateService;
+    private final AgriculturalOperationService agriculturalOperationService;
+    private final PeriodService periodService;
+    private final SelfPropelledMachineTemplateMapper machineTemplateMapper;
+    private final AgriculturalOperationMapper operationMapper;
+    private final TrailerTemplateMapper trailerTemplateMapper;
+    private final PeriodMapper periodMapper;
+
     private static final String JAVA_LIBRARY_PATH = "java.library.path";
     @Value("${gams.path}")
     private String pathToGams;
@@ -31,10 +43,26 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
     @Autowired
     public WorkPlanOptimizerImpl(
             TrailerService trailerService,
-            SelfPropelledMachineService selfPropelledMachineService
+            SelfPropelledMachineService selfPropelledMachineService,
+            TrailerTemplateService trailerTemplateService,
+            SelfPropelledMachineTemplateService selfPropelledMachineTemplateService,
+            AgriculturalOperationService agriculturalOperationService,
+            PeriodService periodService,
+            SelfPropelledMachineTemplateMapper machineTemplateMapper,
+            AgriculturalOperationMapper operationMapper,
+            TrailerTemplateMapper trailerTemplateMapper,
+            PeriodMapper periodMapper
     ) {
         this.trailerService = trailerService;
         this.selfPropelledMachineService = selfPropelledMachineService;
+        this.trailerTemplateService = trailerTemplateService;
+        this.selfPropelledMachineTemplateService = selfPropelledMachineTemplateService;
+        this.agriculturalOperationService = agriculturalOperationService;
+        this.periodService = periodService;
+        this.machineTemplateMapper = machineTemplateMapper;
+        this.operationMapper = operationMapper;
+        this.trailerTemplateMapper = trailerTemplateMapper;
+        this.periodMapper = periodMapper;
     }
 
     @Data
@@ -53,7 +81,7 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
     }
 
     @Override
-    public Double calculateMissingEquipmentCost(Collection<WorkPlan> workPlans) {
+    public Map<String, Object> calculateMissingEquipmentCost(Collection<WorkPlan> workPlans) {
         log.info("Path to gams: {}", pathToGams);
         String javaLibraryPathValue = System.getProperty(JAVA_LIBRARY_PATH);
         System.setProperty(JAVA_LIBRARY_PATH, pathToGams);
@@ -72,7 +100,7 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
         GAMSWorkspace ws = new GAMSWorkspace(wsInfo);
         GAMSDatabase db = ws.addDatabase();
 
-        GAMSSet j = db.addSet("j", 1, "номер марки трактора");
+        GAMSSet j = db.addSet("j", 1, "номер марки самоходной техники");
         gamsVariables.getMachines().forEach(j::addRecord);
 
         GAMSSet i = db.addSet("i", 1, "номер вида механизированных работ");
@@ -96,7 +124,7 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
         GAMSParameter dParameter = db.addParameter("D", 1, "продолжительность периодов неизменных условий");
         gamsVariables.getPeriodsLength().forEach((key, value) -> dParameter.addRecord(key).setValue(value));
 
-        GAMSParameter pParameter = db.addParameter("p", 4, "");
+        GAMSParameter pParameter = db.addParameter("p", 4, "Выработка для связки агрегатов");
         gamsVariables.getWorksPerShift().forEach((key, value) -> pParameter.addRecord(key).setValue(value));
 
         String model = FileReader.readFromResourceFile(PATH_TO_MODEL);
@@ -107,11 +135,24 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
         gamsJob.run(opt, db);
 
         double f = gamsJob.OutDB().getVariable("F").getFirstRecord().getLevel();
-        log.info("F: {}", f);
+        GAMSVariable xVar = gamsJob.OutDB().getVariable("x");
+        GAMSVariable percentVar = gamsJob.OutDB().getVariable("procent");
+        GAMSVariable tpVar = gamsJob.OutDB().getVariable("tp");
+        GAMSVariable mpVar = gamsJob.OutDB().getVariable("mp");
+
+        List<Map<String, Object>> xLevelsList = getXLevels(xVar);
+        List<Map<String, Object>> percentsList = getPercentsList(percentVar);
+        List<Map<String, Object>> neededMachinesList = getNeededMachinesList(tpVar);
+        List<Map<String, Object>> neededTrailersList = getNeededTrailersList(mpVar);
 
         System.setProperty(JAVA_LIBRARY_PATH, javaLibraryPathValue);
 
-        return f;
+        return Map.of(
+                "usedTechnics", xLevelsList,
+                "percents", percentsList,
+                "neededMachines", neededMachinesList,
+                "neededTrailers", neededTrailersList
+        );
     }
 
     private void fillGAMSObject(GAMSVariables gamsVariables, WorkPlan workPlan) {
@@ -122,22 +163,147 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
         String machineGAMSId = MACHINE.getPrefixLowRegister() + machineTemplate.getId();
         String trailerGAMSId = TRAILER.getPrefixLowRegister() + trailerTemplate.getId();
         String workVolumeGAMSId = OPERATION.getPrefixLowRegister() + operation.getId();
-        String periodGAMSId = "p1";
+        Map<String, Long> periodNameToDuration = new HashMap<>();
+        workPlan.getPeriods().forEach(period -> {
+                    Date startDate = period.getStartDate();
+                    Date endDate = period.getEndDate();
+                    long difference = endDate.getTime() - startDate.getTime();
+                    long diffInDays = TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
+                    periodNameToDuration.put(
+                            PERIOD.getPrefixLowRegister() + period.getId(), diffInDays);
+                }
+        );
+
+        Map<String, Float> periodNameToWorkPerShift = new HashMap<>();
+        workPlan.getPeriods().forEach(period -> periodNameToWorkPerShift.put(
+                PERIOD.getPrefixLowRegister() + period.getId(), period.getWorkPerShift()
+        ));
 
         gamsVariables.getMachines().add(machineGAMSId);
         gamsVariables.getTrailers().add(trailerGAMSId);
         gamsVariables.getWorks().add(workVolumeGAMSId);
-        gamsVariables.getPeriods().add(periodGAMSId);
+        gamsVariables.getPeriods().addAll(periodNameToDuration.keySet());
 
         gamsVariables.getWorkVolumes().putIfAbsent(workVolumeGAMSId, operation.getWorkVolume());
         gamsVariables.getMachinesCount().putIfAbsent(machineGAMSId, selfPropelledMachineService.countByMachineTemplateId(machineTemplate.getId()));
         gamsVariables.getTrailersCount().putIfAbsent(trailerGAMSId, trailerService.countByTrailerTemplateId(trailerTemplate.getId()));
-        gamsVariables.getPeriodsLength().putIfAbsent(periodGAMSId, 1L);
+        gamsVariables.getPeriodsLength().putAll(periodNameToDuration);
 
-        gamsVariables.getWorksPerShift().putIfAbsent(
-                new Vector<>(Arrays.asList(workVolumeGAMSId, machineGAMSId, trailerGAMSId, periodGAMSId)), workPlan.getWorkPerShift()
-        );
+        periodNameToWorkPerShift.forEach((id, work) -> gamsVariables.getWorksPerShift().putIfAbsent(
+                new Vector<>(Arrays.asList(workVolumeGAMSId, machineGAMSId, trailerGAMSId, id)), work
+        ));
 
+    }
+
+    private List<Map<String, Object>> getXLevels(GAMSVariable x) {
+        final List<Map<String, Object>> xLevelsList = new LinkedList<>();
+        for (GAMSVariableRecord variableRecord : x) {
+            double level = variableRecord.getLevel();
+            if (level != 0) {
+                String operationKey = variableRecord.getKey(0);
+                String machineKey = variableRecord.getKey(1);
+                String trailerKey = variableRecord.getKey(2);
+                String dateKey = variableRecord.getKey(3);
+
+                AgriculturalOperation operation = getOperationByVariable(operationKey);
+                SelfPropelledMachineTemplate machineTemplate = getMachineTemplateByVariable(machineKey);
+                TrailerTemplate trailerTemplate = getTrailerTemplateByVariable(trailerKey);
+                Period period = getPeriodByVariable(dateKey);
+
+                Map<String, Object> newMap = new LinkedHashMap<>();
+                newMap.put("machine", machineTemplateMapper.toDto(machineTemplate));
+                newMap.put("trailer", trailerTemplateMapper.toDto(trailerTemplate));
+                newMap.put("operation", operationMapper.toDto(operation));
+                newMap.put("period", periodMapper.toDto(period));
+                newMap.put("level", level);
+                xLevelsList.add(newMap);
+            }
+        }
+        return xLevelsList;
+    }
+
+    private List<Map<String, Object>> getPercentsList(GAMSVariable percent) {
+        List<Map<String, Object>> percentsList = new LinkedList<>();
+        for (GAMSVariableRecord variableRecord : percent) {
+            String operationKey = variableRecord.getKey(0);
+            double level = variableRecord.getLevel();
+
+            AgriculturalOperation operation = getOperationByVariable(operationKey);
+
+            Map<String, Object> newMap = new LinkedHashMap<>();
+            newMap.put("operation", operationMapper.toDto(operation));
+            newMap.put("level", level);
+            percentsList.add(newMap);
+        }
+        return percentsList;
+    }
+
+    List<Map<String, Object>> getNeededMachinesList(GAMSVariable tp) {
+        List<Map<String, Object>> neededMachinesList = new LinkedList<>();
+        for (GAMSVariableRecord variableRecord : tp) {
+            String machineKey = variableRecord.getKey(0);
+            double level = variableRecord.getLevel();
+
+            SelfPropelledMachineTemplate machineTemplate = getMachineTemplateByVariable(machineKey);
+
+            Map<String, Object> newMap = new LinkedHashMap<>();
+            newMap.put("machine", machineTemplateMapper.toDto(machineTemplate));
+            newMap.put("level", level);
+            neededMachinesList.add(newMap);
+        }
+        return neededMachinesList;
+    }
+
+    List<Map<String, Object>> getNeededTrailersList(GAMSVariable mp) {
+        List<Map<String, Object>> neededTrailersList = new LinkedList<>();
+        for (GAMSVariableRecord variableRecord : mp) {
+            String trailerKey = variableRecord.getKey(0);
+            double level = variableRecord.getLevel();
+
+            TrailerTemplate trailerTemplate = getTrailerTemplateByVariable(trailerKey);
+
+            Map<String, Object> newMap = new LinkedHashMap<>();
+            newMap.put("trailer", trailerTemplateMapper.toDto(trailerTemplate));
+            newMap.put("level", level);
+            neededTrailersList.add(newMap);
+        }
+        return neededTrailersList;
+    }
+
+    private SelfPropelledMachineTemplate getMachineTemplateByVariable(String variable) {
+        String prefix = variable.substring(0, 1);
+        if (!MACHINE.getPrefixLowRegister().equals(prefix))
+            throw new IllegalArgumentException("Illegal prefix!");
+        String value = variable.substring(1);
+        long machineId = Integer.parseInt(value);
+        return selfPropelledMachineTemplateService.findById(machineId);
+    }
+
+    private TrailerTemplate getTrailerTemplateByVariable(String variable) {
+        String prefix = variable.substring(0, 1);
+        if (!TRAILER.getPrefixLowRegister().equals(prefix))
+            throw new IllegalArgumentException("Illegal prefix!");
+        String value = variable.substring(1);
+        long trailerId = Integer.parseInt(value);
+        return trailerTemplateService.findById(trailerId);
+    }
+
+    private AgriculturalOperation getOperationByVariable(String variable) {
+        String prefix = variable.substring(0, 1);
+        if (!OPERATION.getPrefixLowRegister().equals(prefix))
+            throw new IllegalArgumentException("Illegal prefix!");
+        String value = variable.substring(1);
+        long operationId = Integer.parseInt(value);
+        return agriculturalOperationService.findById(operationId);
+    }
+
+    private Period getPeriodByVariable(String variable) {
+        String prefix = variable.substring(0, 1);
+        if (!PERIOD.getPrefixLowRegister().equals(prefix))
+            throw new IllegalArgumentException("Illegal prefix!");
+        String value = variable.substring(1);
+        long periodId = Integer.parseInt(value);
+        return periodService.findById(periodId);
     }
 
 }

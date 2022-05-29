@@ -2,6 +2,8 @@ package com.bsuir.models;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +20,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "trailer_templates")
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class TrailerTemplate {
 
     @Id

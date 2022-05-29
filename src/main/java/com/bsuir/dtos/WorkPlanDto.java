@@ -3,8 +3,9 @@ package com.bsuir.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Data
 public class WorkPlanDto {
@@ -21,7 +22,8 @@ public class WorkPlanDto {
     @NotNull(message = "Agricultural operation ID cannot be null")
     private Long operationId;
 
-    @NotNull(message = "Work per shift cannot be null")
-    @Min(value = 0, message = "Work per shift cannot be less than 0")
-    private Float workPerShift;
+    @NotNull(message = "Periods cannot be null")
+    @NotEmpty(message = "Periods must have at least 1 element")
+    private Set<PeriodDto> periods;
+
 }
