@@ -134,7 +134,6 @@ public class WorkPlanOptimizerImpl implements WorkPlanOptimizer {
 
         gamsJob.run(opt, db);
 
-        double f = gamsJob.OutDB().getVariable("F").getFirstRecord().getLevel();
         GAMSVariable xVar = gamsJob.OutDB().getVariable("x");
         GAMSVariable percentVar = gamsJob.OutDB().getVariable("procent");
         GAMSVariable tpVar = gamsJob.OutDB().getVariable("tp");
