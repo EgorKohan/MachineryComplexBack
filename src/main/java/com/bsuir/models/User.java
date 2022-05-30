@@ -6,6 +6,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -20,11 +21,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //TODO Add unique constraint for username
-    private String password;
+    @Column(unique = true)
     private String email;
+    private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_to_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -32,6 +33,10 @@ public class User {
     )
     @ToString.Exclude
     private Set<Role> roles;
+
+    public Set<String> getRolesNames(){
+        return roles.stream().map(role -> role.getRoleType().name()).collect(Collectors.toSet());
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -4,6 +4,7 @@ import com.bsuir.dtos.SelfPropelledMachineTemplateDto;
 import com.bsuir.mappers.SelfPropelledMachineTemplateMapper;
 import com.bsuir.models.SelfPropelledMachineTemplate;
 import com.bsuir.services.SelfPropelledMachineTemplateService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,6 +36,7 @@ public class SelfPropelledMachineTemplateController {
         return machineTemplateMapper.toDto(template);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(consumes = "multipart/form-data")
     public SelfPropelledMachineTemplateDto create(@Valid @ModelAttribute SelfPropelledMachineTemplateDto dto) {
         SelfPropelledMachineTemplate template = machineTemplateMapper.toTemplate(dto);
@@ -42,6 +44,7 @@ public class SelfPropelledMachineTemplateController {
         return machineTemplateMapper.toDto(savedTemplate);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public SelfPropelledMachineTemplateDto update(
             @Valid @ModelAttribute SelfPropelledMachineTemplateDto dto,
@@ -53,6 +56,7 @@ public class SelfPropelledMachineTemplateController {
         return machineTemplateMapper.toDto(updatedTemplate);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         machineTemplateService.deleteById(id);

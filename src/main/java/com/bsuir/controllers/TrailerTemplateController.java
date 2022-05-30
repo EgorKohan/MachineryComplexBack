@@ -4,6 +4,7 @@ import com.bsuir.dtos.TrailerTemplateDto;
 import com.bsuir.mappers.TrailerTemplateMapper;
 import com.bsuir.models.TrailerTemplate;
 import com.bsuir.services.TrailerTemplateService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,6 +35,7 @@ public class TrailerTemplateController {
         return trailerTemplateMapper.toDto(trailerTemplate);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(consumes = "multipart/form-data")
     public TrailerTemplateDto create(@Valid @ModelAttribute TrailerTemplateDto dto) {
         TrailerTemplate trailerTemplate = trailerTemplateMapper.toTemplate(dto);
@@ -41,6 +43,7 @@ public class TrailerTemplateController {
         return trailerTemplateMapper.toDto(savedTrailerTemplate);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public TrailerTemplateDto update(
             @Valid @ModelAttribute TrailerTemplateDto dto,
@@ -52,6 +55,7 @@ public class TrailerTemplateController {
         return trailerTemplateMapper.toDto(updatedTrailerTemplate);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         trailerTemplateService.deleteById(id);

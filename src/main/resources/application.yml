@@ -8,6 +8,16 @@ server:
 
 gams:
   path: C:\GAMS\39\apifiles\Java\api
+
+jwt:
+  expiration:
+    access:
+      minutes: 5
+    refresh:
+      minutes: 30
+  secret:
+    access: supermegasecret
+    refresh: supermegarefreshsecret
 ---
 
 spring:

@@ -2,6 +2,7 @@ package com.bsuir.models;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "roles")
-public class Role {
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +22,14 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     private ERole roleType;
+
+    public Role(String roleType) {
+        this.roleType = ERole.valueOf(roleType);
+    }
+
+    public Role(ERole roleType) {
+        this.roleType = roleType;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -34,4 +43,10 @@ public class Role {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    @Override
+    public String getAuthority() {
+        return roleType.name();
+    }
+
 }
