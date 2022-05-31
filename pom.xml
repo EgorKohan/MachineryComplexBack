@@ -133,6 +133,13 @@
         </dependency>
         <!-- JWT -->
 
+        <!-- Flyway -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <!-- Flyway -->
+
     </dependencies>
 
     <properties>
