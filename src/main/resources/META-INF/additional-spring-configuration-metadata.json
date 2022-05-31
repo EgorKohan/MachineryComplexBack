@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "jwt.secret.access",
+      "type": "java.lang.String",
+      "description": "Description for jwt.secret.access."
+    },
+    {
+      "name": "gams.path",
+      "type": "java.lang.String",
+      "description": "Description for gams.path."
+    },
+    {
+      "name": "jwt.expiration.access.minutes",
+      "type": "java.lang.Integer",
+      "description": "Description for jwt.expiration.access.minutes."
+    },
+    {
+      "name": "jwt.expiration.refresh.minutes",
+      "type": "java.lang.Integer",
+      "description": "Description for jwt.expiration.refresh.minutes."
+    },
+    {
+      "name": "jwt.secret.refresh",
+      "type": "java.lang.String",
+      "description": "Description for jwt.secret.refresh."
+    }
+  ]
+}
