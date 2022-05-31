@@ -1,5 +1,5 @@
 insert into users(email, password) VALUES
-    ('admin@admin.com', '12345');
+    ('admin@admin.com', '$2a$12$4sCmDCRtONKMG57mfb2HmOcOzKvgZJkMI0NZfX/k26SmJXHRctUKO');
 
 insert into roles(role_type) values
     ('ROLE_ADMIN');

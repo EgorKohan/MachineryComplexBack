@@ -9,6 +9,7 @@ import io.jsonwebtoken.Claims;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.message.AuthException;
@@ -22,10 +23,11 @@ public class AuthService {
     private final UserService userService;
     private final Map<String, String> refreshStorage = new HashMap<>();
     private final JwtProvider jwtProvider;
+    private final PasswordEncoder passwordEncoder;
 
     public JwtResponse login(@NonNull JwtRequest authRequest) throws AuthException {
         final User user = userService.findByEmail(authRequest.getEmail());
-        if (user.getPassword().equals(authRequest.getPassword())) {
+        if (passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
             final String accessToken = jwtProvider.generateAccessToken(user);
             final String refreshToken = jwtProvider.generateRefreshToken(user);
             refreshStorage.put(user.getEmail(), refreshToken);

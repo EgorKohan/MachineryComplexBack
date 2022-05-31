@@ -35,7 +35,7 @@ public class TrailerTemplateController {
         return trailerTemplateMapper.toDto(trailerTemplate);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping(consumes = "multipart/form-data")
     public TrailerTemplateDto create(@Valid @ModelAttribute TrailerTemplateDto dto) {
         TrailerTemplate trailerTemplate = trailerTemplateMapper.toTemplate(dto);
@@ -43,7 +43,7 @@ public class TrailerTemplateController {
         return trailerTemplateMapper.toDto(savedTrailerTemplate);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public TrailerTemplateDto update(
             @Valid @ModelAttribute TrailerTemplateDto dto,
@@ -55,7 +55,7 @@ public class TrailerTemplateController {
         return trailerTemplateMapper.toDto(updatedTrailerTemplate);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         trailerTemplateService.deleteById(id);

@@ -21,4 +21,4 @@ RUN mvn install:install-file \
     -Dpackaging=jar \
     && mvn -Dgams.path=$pathToGamsApi clean install
 
-CMD java -Dgams.path=$pathToGamsApi -jar target/MachineryComplexBack-1.0-SNAPSHOT.jar
+CMD java -Dspring.profiles.active=dev -Dgams.path=$pathToGamsApi -jar target/MachineryComplexBack-1.0-SNAPSHOT.jar

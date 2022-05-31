@@ -36,7 +36,7 @@ public class SelfPropelledMachineTemplateController {
         return machineTemplateMapper.toDto(template);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping(consumes = "multipart/form-data")
     public SelfPropelledMachineTemplateDto create(@Valid @ModelAttribute SelfPropelledMachineTemplateDto dto) {
         SelfPropelledMachineTemplate template = machineTemplateMapper.toTemplate(dto);
@@ -44,7 +44,7 @@ public class SelfPropelledMachineTemplateController {
         return machineTemplateMapper.toDto(savedTemplate);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public SelfPropelledMachineTemplateDto update(
             @Valid @ModelAttribute SelfPropelledMachineTemplateDto dto,
@@ -56,7 +56,7 @@ public class SelfPropelledMachineTemplateController {
         return machineTemplateMapper.toDto(updatedTemplate);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         machineTemplateService.deleteById(id);
