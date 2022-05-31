@@ -1,4 +1,6 @@
 .idea
+.jpb
+pg_data
 target
 out
 /MachineryBack*
